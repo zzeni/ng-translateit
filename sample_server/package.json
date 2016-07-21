@@ -1,0 +1,16 @@
+{
+  "name": "ngTranslateitAPI",
+  "version": "1.0.0",
+  "description": "A lightweight backend for the ng-translateit client",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Evgenia Manolova",
+  "license": "ISC",
+  "dependencies": {
+    "merge": "^1.2.0",
+    "node-router": "^0.1.5"
+  }
+}

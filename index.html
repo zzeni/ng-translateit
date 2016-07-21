@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width,initial-scale=1" name="viewport">
+  <title>NGTranslateIt :: translations web manager</title>
+  <link href='https://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="all" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" media="all" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" media="all" href="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css">
+  <link rel="stylesheet" media="all" href="node_modules/angular-material/angular-material.min.css">
+  <link rel="stylesheet" media="all" href="css/style.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+  <script src="js/diff_match_patch.js"></script>
+</head>
+
+<body ng-app="app" ng-controller="translationsController">
+  <header>
+    <div class="jumbotron">
+      <div class="container">
+        <div class="heading">
+          <h1>NGTranslateIt :: translations web manager</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="main-container" class="loading">
+
+    <div class="container">
+      <div class="col-lg-12">
+
+        <nav class="navbar navbar-invert">
+          <div class="container-fluid">
+            <ul class="nav navbar-nav pull-left">
+              <li ng-show="$tm.hasChanges()">
+                <button class="btn btn-danger" ng-click="showDiffModal()">Preview {{ $tm.hasChanges() }} changes</button>
+              </li>
+              <li ng-hide="$tm.hasChanges()">
+                <button class="btn btn-danger" disabled>Preview 0 changes</button>
+              </li>
+            </ul>
+            <button type="button" class="navbar-toggle collapsed" ng-click="isCollapsed = !isCollapsed" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" uib-collapse="isCollapsed">
+              <ul class="nav navbar-nav pull-right">
+                <li>
+                  <form class="form-inline">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" ng-model="blankItemsOnly"> Blank items only
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" ng-model="editedItemsOnly"> Changed items only
+                      </label>
+                    </div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" ng-model="unsavedItemsOnly"> Unsaved items
+                      </label>
+                    </div>
+                    <div class="form-group">
+                      <input type="text" ng-model="search.path" uib-typeahead="key for key in $tm.getTranslationKeys() | filter:$viewValue | limitTo:8" class="form-control" placeholder="Search by key">
+                    </div>
+                    <div class="form-group">
+                      <input class="form-control" ng-model="search.text" placeholder="Search by text">
+                    </div>
+                    <div class="form-group">
+                      <select class="form-control" ng-model="selectedLanguage" placeholder="language" ng-options="lang.key for lang in langDB track by lang.key">
+                        <option value="" selected>any</option>
+                      </select>
+                    </div>
+                  </form>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
+        <div ng-show="filteredDict = ($tm.getDict()|filter:search|filter:editedFilter|filter:blankFilter|filter:unsavedFilter|filter:languageFilter); filteredDict.length">
+          <p>Намерени са <span class="strong">{{ filteredDict.length }}</span> резултати. Показване на първите <span class="strong">10</span> от тях.</p>
+          <div class="panel panel-danger" ng-class="{'changed': entry.changed()}" ng-repeat="entry in filteredDict|limitTo:10">
+            <div class="panel-heading">
+              <p class="entry-path"> {{ entry.path }}</p>
+            </div>
+            <div class="panel-body">
+              <div ng-hide="entry.editing">
+                <tt ng-click="entry.editing = true; document.getElementById(entry.path).focus();">
+                  <span ng-show="entry.text">{{ entry.text }}</span>
+                  <span ng-hide="entry.text" class="light">(empty)</span>
+                </tt>
+              </div>
+              <div ng-show="entry.editing">
+                <textarea class="form-control" rows=3 ng-init="entry.new_text = entry.text" ng-model="entry.new_text" id="{{ entry.path }}"></textarea>
+                <div ng-show="entry.changed()">
+                  <h3>Changes:</h3>
+                  <p class="diff-entry" processing-diff left-obj="entry.original_text()" right-obj="entry.text"></p>
+                </div>
+                <div class="button-group">
+                  <button class="btn btn-danger" ng-click="$tm.addChange(entry)" ng-disabled="entry.new_text === entry.text">Change</button>
+                  <button class="btn btn-default" ng-click="entry.new_text = entry.text; entry.editing = false">Cancel</button>
+                  <button class="btn btn-warning pull-right" ng-show="entry.changed()" type="button" ng-click="$tm.revokeChange(entry.path)">revoke changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div ng-hide="filteredDict.length">
+          <p>Няма намерени резултати.</p>
+        </div>
+
+        <nav class="navbar-bottom">
+          <div class="container-fluid">
+            <ul class="nav navbar-nav pull-left">
+              <li ng-show="$tm.hasChanges()">
+                <button class="btn btn-danger" ng-click="showDiffModal()">Preview {{ $tm.hasChanges() }} changes</button>
+              </li>
+              <li ng-hide="$tm.hasChanges()">
+                <button class="btn btn-danger" disabled>Preview 0 changes</button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="notice" class="hidden">
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="6000">{{alert.msg}}</uib-alert>
+  </div>
+  
+  <script type="text/ng-template" id="diffModal.html">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
+      <h3 class="modal-title">Review changes</h3>
+    </div>
+    <div class="modal-body">
+      <ul class="diff-container">
+        <li ng-repeat="(key,change) in $tm.getChanges()">
+          <h3>{{ key }}</h3>
+          <tt class="diff-entry" processing-diff left-obj="change.original" right-obj="change.new"></tt>
+          <button class="btn btn-warning" type="button" ng-click="revokeChange(key)">revoke</button>
+        </li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" type="button" ng-click="submit()">Persist Changes</button>
+      <button class="btn btn-danger" type="button" ng-click="revokeAll()">Revoke all</button>
+    </div>
+  </script>
+
+
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/ngstorage/ngStorage.min.js"></script>
+  <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+
+  <!-- Diff-match-patch Dependencies -->
+  <script src="node_modules/angular-aria/angular-aria.min.js"></script>
+  <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+  <script src="node_modules/angular-material/angular-material.min.js"></script>
+<!--  <script src="//neil.fraser.name/software/diff_match_patch/svn/trunk/javascript/diff_match_patch.js"></script>-->
+  <script src="node_modules/angular-diff-match-patch/angular-diff-match-patch.js"></script>
+
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+
+  <script>
+    document.getElementById('main-container').classList.remove("loading");
+    document.getElementById('notice').classList.remove("hidden");
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,185 @@
+{
+  "common": {
+    "learn_more": "learn more",
+    "read_more": "read more"
+  },
+  "general": {
+    "error": {
+      "500": "This request can't be processed. If the problem persists, please contact us on service@bemyguide.com",
+      "resource": {
+        "error": "Error"
+      }
+    }
+  },
+  "home": {
+    "intro": {
+      "INTRO_CAPTION": "Find<span>your</span><br><span>adventure</span>guide",
+      "INTRO_TEXT": "Turn your journey into a great adventure! Just choose your desired activity and destination, and we'll help you find the perfect guide for it.",
+      "MOTO": "\"Life is meant for good friends and great adventures\""
+    },
+    "whybemyguide": {
+      "HEADING": "Why BE MY GUIDE",
+      "article1": {
+        "title": "BeSafe. BeWise. BeMyGuide",
+        "body": "support only certified, verified and handpicked local adventure guides and be in safe hands"
+      },
+      "article2": {
+        "title": "Real people with Real passions",
+        "body": "find like-minded guides with diverse personal interests and enjoy the human element of your adventures"
+      },
+      "article3": {
+        "title": "Personalized experiences",
+        "body": "tailor your next adventure together with your guide and be flexible while traveling all around the globe"
+      }
+    },
+    "activities": {
+      "HEADING1": "<span>No limits:</span> Be<span>!</span>Active",
+      "HEADING2": "No limits: <span>Be</span>!<span>Active</span>",
+      "HEADING": "No!<span>limits</span><img class='just-img' src='/img/home/activities-text-just.png'>Be!<span>Active</span>",
+      "CAPTION": "Choose the activity of your taste to get started with our matchmaking service"
+    },
+    "blog": {
+      "HEADING": "With BeMyGuide around the globe",
+      "article1": {
+        "url": "/img/home/blog/1.jpg",
+        "img_url": "/img/home/blog/1.jpg",
+        "title": "Top 10 destinations for birdwatching"
+      },
+      "article2": {
+        "url": "/img/home/blog/2.jpg",
+        "img_url": "/img/home/blog/2.jpg",
+        "title": "The most stunning places on the planet"
+      },
+      "article3": {
+        "url": "/img/home/blog/3.jpg",
+        "img_url": "/img/home/blog/3.jpg",
+        "title": "The secret treasures of Rila mountain"
+      },
+      "article4": {
+        "url": "/img/home/blog/4.jpg",
+        "img_url": "/img/home/blog/4.jpg",
+        "title": "How well prepared are you for a winter hike?"
+      }
+    },
+    "howitworks": {
+      "HEADING": "How it works",
+      "article1": {
+        "title": "1. Discover destinations & activities",
+        "body": "Choose your next adventure destination and find your dreamt outdoor activities.",
+        "url": "#"
+      },
+      "article2": {
+        "title": "2. Search for guides & adventurers",
+        "body": "Find like-minded guides who have same passions and interests just like you.",
+        "url": "#"
+      },
+      "article3": {
+        "title": "3. Connect & book a guide",
+        "body": "Contact your best-matching guide directly and tailor your next activity together.",
+        "url": "#"
+      }
+    }
+  },
+  "session": {
+    "login": {
+      "heading": "Log in",
+      "submit": "Log in",
+      "pass_forgotten": "forgot your password?",
+      "email": "email",
+      "password": "password",
+      "goto_signup": "Don't have an account yet?",
+      "fb_login": "log in with facebook",
+      "google_login": "log in with Google"
+    },
+    "signup": {
+      "heading": "Sign up",
+      "email": "email",
+      "password": "password",
+      "confirm_password": "confirm password",
+      "submit": "submit",
+      "go_back": "go back",
+      "goto_login": "go to login",
+      "fb_signup": "sign up with facebook",
+      "didnt_receive_conf_email": "didn't receive confirmation email?"
+    }
+  },
+  "layout": {
+    "nav": {
+      "signup": "Sign up",
+      "login": "Log in",
+      "logout": "Log out",
+      "profile": "Profile",
+      "home": "Home",
+      "search": "Search",
+      "more": {
+        "our_story": "our story",
+        "team": "team",
+        "terms_and_conditions": "terms and conditions",
+        "faq": "FAQ",
+        "contact_us": "contact us"
+      }
+    }
+  },
+  "utils": {
+    "search": {
+      "places": "country",
+      "activities": "activity",
+      "search": "Search",
+      "selected": " selected"
+    },
+    "activities": {
+      "ballooning": "ballooning",
+      "mountain_biking": "mountain biking",
+      "canoeing": "canoeing",
+      "canyoning": "canyoning",
+      "caving": "caving",
+      "climbing": "rock climbing",
+      "cycling": "cycling",
+      "high_mountain": "high mountaineering",
+      "hiking": "hiking",
+      "ice_climbing": "ice climbing",
+      "kayaking": "kayaking",
+      "kite_surfing": "kite surfing",
+      "off_piste_skiing": "off piste skiing",
+      "paragliding": "paragliding",
+      "rafting": "rafting",
+      "rappelling": "rappelling",
+      "sailing": "sailing",
+      "scuba_diving": "scuba diving",
+      "sea_kayak": "sea kayaking",
+      "ski_touring": "ski touring",
+      "sky_diving": "skydiving",
+      "snowshoeing": "snowshoeing",
+      "splitboard": "splitboarding",
+      "wind_surfing": "wind surfing",
+      "kite_surfing": "kite surfing",
+      "trekking": "trekking",
+      "via_ferrata": "via-ferrata"
+    },
+    "activity_categories": {
+      "land": "land",
+      "air": "air",
+      "water": "water",
+      "bike": "bike",
+      "ski": "ski",
+      "rope": "rope",
+      "mount": "mountain",
+      "sea_water": "sea water",
+      "white_water": "white water"
+    }
+  },
+  "profile": {
+    "verify": {
+      "email": {
+        "code_resent": "Verification code sent. Please Check your email."
+      }
+    }
+  },
+  "search": {
+    "dates": "Dates",
+    "place": "Place",
+    "attend_as": "You are",
+    "attend_as_individual": "just me", 
+    "attend_as_group": "a group"
+  }
+}

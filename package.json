@@ -1,0 +1,32 @@
+{
+  "name": "ng-translateit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A web manager for angular-translate",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zzeni/ng-translateit.git"
+  },
+  "author": "Evgenia Manolova",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zzeni/ng-translateit/issues"
+  },
+  "homepage": "https://github.com/zzeni/ng-translateit#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "angular": "^1.5.7",
+    "angular-animate": "^1.5.7",
+    "angular-aria": "^1.5.7",
+    "angular-diff-match-patch": "github:amweiss/angular-diff-match-patch",
+    "angular-material": "^1.1.0-rc.5",
+    "angular-ui-bootstrap": "^1.3.3",
+    "bootstrap": "^3.3.6",
+    "diff-match-patch": "^1.0.0",
+    "ngstorage": "^0.3.10"
+  }
+}
