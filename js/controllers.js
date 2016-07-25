@@ -18,7 +18,7 @@ app.controller('translationsController', function (
   });
 
   $scope.alerts = [];
-  
+
   function init() {
     apiClient.getAllTranslations().then(
       function(response) {
@@ -104,8 +104,8 @@ app.controller('translationsController', function (
 
     var modalInstance = $uibModal.open({
       animation: true,
-      templateUrl: 'diffModal.html',
-      controller: 'diffModalController',
+      templateUrl: 'previewChanges.html',
+      controller: 'previewChangesController',
       size: 'lg',
       resolve: {
         $tm: function () {
@@ -147,7 +147,7 @@ app.controller('translationsController', function (
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
 
-app.controller('diffModalController', function ($scope, $rootScope, apiClient, $uibModalInstance, $tm) {
+app.controller('previewChangesController', function ($scope, $rootScope, apiClient, $uibModalInstance, $tm) {
   $scope.$tm = $tm;
 
   $scope.options = {

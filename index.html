@@ -17,7 +17,7 @@
   <script src="js/diff_match_patch.js"></script>
 </head>
 
-<body ng-app="app" ng-controller="translationsController">
+<body ng-app="ng-translateit" ng-controller="translationsController">
   <header>
     <div class="jumbotron">
       <div class="container">
@@ -159,8 +159,8 @@
   <div id="notice">
     <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" dismiss-on-timeout="6000">{{alert.msg}}</uib-alert>
   </div>
-  
-  <script type="text/ng-template" id="diffModal.html">
+
+  <script type="text/ng-template" id="previewChanges.html">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"><span aria-hidden="true">&times;</span></button>
       <h3 class="modal-title">Review changes</h3>
