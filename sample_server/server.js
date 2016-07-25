@@ -98,14 +98,6 @@ route((req, res, next) => {
   }
 });
 
-// all routes with error wrapper - will catch errors from any route
-route((err, req, res, next) => {
-  console.error('Error:', err.message);
-  console.warn('stack:', err.stack);
-  // just send back the error, that should be enough
-  res.send(err);
-});
-
 // all options requests wrapper (needed for the browser's CORS policy)
 route('OPTIONS', (req, res, next) => {
   // set the correct CORS headers
@@ -135,15 +127,21 @@ route('GET', '/ping', (req, res, next) => {
 });
 
 route('GET', '/translations/all', (req, res, next) => {
-  var languages = fs.readdirSync(config.translPath).map((file) => {
-    return file.substring(0,2);
-  });
   var translations = {};
 
-  languages.forEach((lang) => {
-    translations[lang] = getLang(lang);
-    var langChecksum = checksum(translations[lang]);
-    translations[lang].checksum = langChecksum;
+  config.languages.forEach((lang) => {
+    try {
+      translations[lang] = getLang(lang);
+      var langChecksum = checksum(translations[lang]);
+      translations[lang].checksum = langChecksum;
+    }
+    catch (e) {
+      if (e.code === 'ENOENT') {
+        console.warn(e.message);
+      } else {
+        throw e;
+      }
+    }
   });
 
   res.send(JSON.stringify(translations));
@@ -177,4 +175,12 @@ route('POST', '/login', function (req, res, next) {
 route('POST', '/logout', (req, res, next) => {
   authToken = "";
   res.send('OK');
+});
+
+// The default error Handler (has to be the last of all route declarations)
+route((err, req, res, next) => {
+  console.error('Error:', err.message);
+  console.warn('stack:', err.stack);
+  // just send back the error, that should be enough
+  res.send(err);
 });

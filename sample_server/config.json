@@ -1,4 +1,5 @@
 {
+  "languages": ["en", "es", "bg"],
   "serverPort": 3001,
   "translPath": "../translations",
   "authUser": {
