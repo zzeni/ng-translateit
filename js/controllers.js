@@ -10,6 +10,7 @@ app.controller('translationsController', function (
 ) {
 
   $scope.langDB = config.langDB;
+  $scope.loggedIn = false;
 
   $localStorage.$default({
     changes: {},
@@ -17,7 +18,7 @@ app.controller('translationsController', function (
   });
 
   $scope.alerts = [];
-
+  
   function init() {
     apiClient.getAllTranslations().then(
       function(response) {
@@ -42,13 +43,18 @@ app.controller('translationsController', function (
   }
 
   apiClient.pingBackend().then(
-    function (data) {
+    function (response) {
+      $scope.loggedIn = true;
       $scope.$emit('connected');
       console.log('connected to server ..');
     },
-    function (error) {
-      console.error(error);
-      document.getElementById('main-container').innerHTML = "<p>There is a problem connecting to the backend server. Please contact the website administrator.</p>";
+    function (response) {
+      console.error(response);
+      if (response.status === 401) {
+        $scope.loggedIn = false;
+      } else {
+        document.getElementById('main-container').innerHTML = "<p>There is a problem connecting to the backend server. Please contact the website administrator.</p>";
+      }
     }
   );
 
@@ -60,6 +66,35 @@ app.controller('translationsController', function (
     console.log(data)
     $scope.alerts.push({type: 'danger', msg: 'An unexpected error occured: ' + data});
   });
+
+  $scope.login = function login(username, password) {
+    console.log('logging in...');
+    return apiClient.login(username, password).then(
+      function (response) {
+        console.log('logged in');
+        $scope.$emit('notice', 'Successfully logged in.');
+        $scope.loggedIn = true;
+        init();
+      },
+      function (response) {
+        console.error(response);
+        $scope.$emit('error', response.data);
+        $scope.loggedIn = false;
+      }
+    );
+  };
+
+  $scope.logout = function logout() {
+    return apiClient.login().then(
+      function (response) {
+        $scope.$emit('notice', 'Successfully logged out.');
+        $scope.loggedIn = false;
+      },
+      function (response) {
+        $scope.$emit('error', response.data);
+      }
+    );
+  };
 
   $scope.closeAlert = function(index) {
     $scope.alerts.splice(index, 1);
@@ -82,7 +117,9 @@ app.controller('translationsController', function (
     modalInstance.result.then(
       function (msg) {
         $scope.alerts.push({msg: msg, type: 'success'});
-        $scope.init();
+        $localStorage.changes = {};
+        $localStorage.versions = {};
+        init();
       },
       function () {
         // do nothing ..

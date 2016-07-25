@@ -1,5 +1,5 @@
 {
-  "serverPort": 8080,
+  "serverPort": 3001,
   "translPath": "../translations",
   "authUser": {
       "id": "52b3e0b75e6297368b0525282df4e5da",
@@ -7,5 +7,6 @@
       "id_unvealed": "lanserviz",
       "password_unvealed": "servizlan"
   },
-  "allowOrigin": "*"
+  "allowOrigin": "",
+  "authTokenId": "ngtm.ssid"
 }

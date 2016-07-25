@@ -134,17 +134,24 @@ ul.diff-container {
   z-index: 99999;
 }
 
-#notice .alert {
-/*  margin: 0 auto;*/
-/*  width: 70%;*/
-/*  background-color: rgba(173, 216, 230, 0.85);*/
-/*  background-color: lightblue;*/
-/*  border: 1px solid darkcyan;*/
-/*  padding: 1.6em;*/
-/*  text-align: center;*/
-/*  border-radius: 10px;*/
-/*  color: #333;*/
-/*  font-size: 1.2em;*/
+#login-form .row {
+  margin: 1em 0;
+}
+
+.alert.ng-enter,
+.alert.ng-leave {
+  -webkit-transition: 0.5s linear all;
+  transition: 0.5s linear all;
+}
+
+.alert.ng-enter,
+.alert.ng-leave.ng-leave-active {
+  opacity: 0;
+}
+
+.alert.ng-leave,
+.alert.ng-enter.ng-enter-active {
+  opacity: 1;
 }
 
 @media (max-width: 768px) {

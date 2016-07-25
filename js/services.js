@@ -16,7 +16,7 @@ app.service('config', function () {
         name: 'English'
       }
     ],
-    SERVER_URL: "http://localhost:8080"
+    SERVER_URL: "http://localhost:7888/api"
   };
 });
 
@@ -81,16 +81,7 @@ app.service('utils', function (Entry) {
 
   return {
     json2dict: flattenObj,
-    dict2json: unflattenObj,
-    pingBackend: function pingBackend() {
-      return $http.get(SERVER_URL + '/ping');
-    },
-    getAllTranslations: function getAllTranslations() {
-      return $http.get(SERVER_URL + '/translations/all');
-    },
-    submit: function submit(changes) {
-      return $http.post(SERVER_URL + '/translations/updateAll', changes);
-    }
+    dict2json: unflattenObj
   };
 });
 
@@ -105,7 +96,13 @@ app.service('apiClient', function ($http, config) {
       return $http.get(config.SERVER_URL + '/translations/all');
     },
     submit: function submit(changes) {
-      return $http.post(config.SERVER_URL + '/translations/updateAll', changes);
+      return $http.post(config.SERVER_URL + '/translations/updateAll', {changes: changes});
+    },
+    login: function login(username, password) {
+      return $http.post(config.SERVER_URL + '/login', {username: username, password: password});
+    },
+    logout: function logout() {
+      return $http.post(config.SERVER_URL + '/logout')
     }
   };
 });
@@ -225,7 +222,7 @@ app.factory('TranslationFactory', function (Entry, utils) {
       }
       entry.editing = false;
     };
-    
+
     this.revokeChange = function revokeChanges(key) {
       delete changes[key];
       dict[key].revoke();
@@ -239,7 +236,12 @@ app.factory('TranslationFactory', function (Entry, utils) {
     };
 
     this.changesToJson = function changesToJson() {
-      var resultJson = utils.dict2json(changesToJson(changes));
+      var formattedChanges = {};
+      for (var key in changes) {
+        formattedChanges[key] = changes[key].new;
+      }
+
+      var resultJson = utils.dict2json(formattedChanges);
       console.log(resultJson);
 
       for (var lang in resultJson) {
