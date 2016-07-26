@@ -9,88 +9,49 @@ module.exports = function (grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    concat: {
+    jshint: {
       options: {
-        separator: ';\n'
+        curly: false,
+        eqeqeq: true,
+        eqnull: true,
+        browser: true,
+        globals: {
+          jQuery: true
+        }
       },
-      dist: {
-        src: ['src/app.js',
-              'src/initializers/**/*.js',
-              'src/resources/**/*.js',
-              'src/api.js',
-              'src/filters.js',
-              'src/directives/**/*.js',
-              'src/services/**/*.js',
-              'src/controllers/**/*.js'],
-        dest: 'dist/<%= pkg.name %>.js'
-      }
+      all: ['Gruntfile.js', 'js/**/*.js', 'test/**/*.js']
     },
-    uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
-      },
-      dist: {
-        files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-        }
-      }
-    },
-    ngconstant: {
-      options: {
-        name: 'config',
-        dest: 'dist/config.js',
-        wrap: '"use strict";\n\n{%= __ngModule %}',
-        space: '  ',
-        constants: {
-          config: {
-            debug: false,
-            LANGUAGE_KEYS: ['en', 'es'],
-            FB_CLIENT_ID: "562175730613525",
-            API_FB_AUTH_URL: "/api/facebook-login",
-            GOOGLE_BROWSER_KEY: "AIzaSyANtLSp4B1JZ3wkGA-FpmqpGon4q83gaVY",
-            GOOGLE_MAPS_URL: "https://maps.googleapis.com/maps/api/js"
-          }
-        }
-      },
-      development: {
-        constants: {
-          config: {
-            ENV: 'development',
-            SITE_URL: 'http://localhost:7888/',
-            debug: true
-          }
-        }
-      },
-      production: {
-        constants: {
-          config: {
-            ENV: 'production',
-            SITE_URL: 'http://dev.bemyguide.today:8081/',
-          }
-        }
-      }
-    },
-    watch: {
-      scripts: {
-        files: ['src/**/*.js'],
-        tasks: ['default'],
+    karma: {
+      unit: {
         options: {
-          spawn: false,
-          interrupt: true
-        },
-      },
-    },
+          frameworks: ['jasmine'],
+          singleRun: true,
+          browsers: ['PhantomJS'],
+          files: [
+            'node_modules/angular/angular.js',
+            'node_modules/angular-mocks/angular-mocks.js',
+            'node_modules/ngstorage/ngStorage.min.js',
+            'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+            'node_modules/angular-aria/angular-aria.min.js',
+            'node_modules/angular-animate/angular-animate.min.js',
+            'node_modules/angular-material/angular-material.min.js',
+            'node_modules/angular-diff-match-patch/angular-diff-match-patch.js',
+            'vendor/js/diff_match_patch.js',
+            'js/app.js',
+            'js/services.js',
+            'js/controllers.js',
+//            'js/**/*.js',
+            'test/**/*.js'
+          ]
+        }
+      }
+    }
   });
-
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-ng-constant');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  
+  grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Tasks
-  grunt.registerTask('config_prod', 'ngconstant:production');
-  grunt.registerTask('config', 'ngconstant:development');
-  grunt.registerTask('build', ['concat', 'uglify']);
-  grunt.registerTask('production', ['config_prod', 'build']);
-  grunt.registerTask('default', ['config', 'build']);
+  grunt.registerTask('test', ['jshint', 'karma']);
+  grunt.registerTask('default', []);
 };

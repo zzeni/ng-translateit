@@ -44,9 +44,9 @@ app.service('Entry', function () {
 
   return {
     new: function (path, text) {
-      return new Entry(path, text)
+      return new Entry(path, text);
     }
-  }
+  };
 });
 
 app.service('utils', function (Entry) {
@@ -102,12 +102,14 @@ app.service('apiClient', function ($http, config) {
       return $http.post(config.SERVER_URL + '/login', {username: username, password: password});
     },
     logout: function logout() {
-      return $http.post(config.SERVER_URL + '/logout')
+      return $http.post(config.SERVER_URL + '/logout');
     }
   };
 });
 
 app.factory('TranslationFactory', function (Entry, utils) {
+  "use strict";
+
   function versionViolationError(actualVersion, currentVersion) {
     throw new Error("versions don't match!");
   }
@@ -137,7 +139,8 @@ app.factory('TranslationFactory', function (Entry, utils) {
         // add empty translation entries for the missing translations
         languages.forEach(function (lang) {
           var newPath = lang + '.' + pathKey;
-          if (!dict[newPath]) dict[newPath] = Entry.new(newPath, "");
+          if (!dict[newPath])
+            dict[newPath] = Entry.new(newPath, "");
         });
       });
 
@@ -157,7 +160,8 @@ app.factory('TranslationFactory', function (Entry, utils) {
         var storedChangesVersion = storedVersions[lang];
         var actualVersion = versions[lang];
 
-        if (!storedChangesVersion) throw new Error("Can't assign changes without version!");
+        if (!storedChangesVersion)
+          throw new Error("Can't assign changes without version!");
 
         if (storedChangesVersion !== actualVersion) {
           versionViolationError(storedChangesVersion, actualVersion);
@@ -249,7 +253,7 @@ app.factory('TranslationFactory', function (Entry, utils) {
       }
 
       return resultJson;
-    }
+    };
 
     init(translationsData);
     initChanges(localStorage.changes, localStorage.versions);

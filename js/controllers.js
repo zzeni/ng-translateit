@@ -8,6 +8,7 @@ app.controller('translationsController', function (
   TranslationFactory,
   $location
 ) {
+  "use strict";
 
   $scope.langDB = config.langDB;
   $scope.loggedIn = false;
@@ -21,7 +22,7 @@ app.controller('translationsController', function (
 
   function init() {
     apiClient.getAllTranslations().then(
-      function(response) {
+      function (response) {
         try {
           $scope.$tm = new TranslationFactory(response.data, $localStorage);
           $localStorage.changes = $scope.$tm.getChanges();
@@ -30,7 +31,7 @@ app.controller('translationsController', function (
         catch (err) {
           $scope.$emit('error', err);
           // TODO: show local storage cleanup!
-          $localStorage.changes = {}
+          $localStorage.changes = {};
           setTimeout(function () {
             window.location.reload();
           }, 30000);
@@ -63,7 +64,7 @@ app.controller('translationsController', function (
   });
 
   $scope.$on('error', function (event, data) {
-    console.log(data)
+    console.log(data);
     $scope.alerts.push({type: 'danger', msg: 'An unexpected error occured: ' + data});
   });
 
@@ -96,7 +97,7 @@ app.controller('translationsController', function (
     );
   };
 
-  $scope.closeAlert = function(index) {
+  $scope.closeAlert = function (index) {
     $scope.alerts.splice(index, 1);
   };
 
@@ -148,6 +149,7 @@ app.controller('translationsController', function (
 // It is not the same as the $uibModal service used above.
 
 app.controller('previewChangesController', function ($scope, $rootScope, apiClient, $uibModalInstance, $tm) {
+  "use strict";
   $scope.$tm = $tm;
 
   $scope.options = {
